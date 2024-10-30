@@ -1,0 +1,168 @@
+<!-- Contenido principal -->
+<div class="w-full mt-2 overflow-y-auto rounded-lg">
+    <div id="scrollable-content"
+        class="relative flex flex-col w-full h-full p-2 text-black bg-white shadow-md rounded-xl">
+        <div class="relative flex flex-col w-full overflow-y-auto bg-white">
+            <!-- Apartir de qui, poner los demas contenido-->
+            <div class="container mx-auto p-4 shadow-md rounded-md">
+                <div id="error-message" class="hidden text-red-500 mb-4"></div>
+                <div class="mb-8">
+                    <h1 class="text-2xl font-extrabold mb-4">Nuevo Producto</h1>
+                    <form id="product-form" [formGroup]="formProduct" (ngSubmit)="createProduct()">
+                        <div class="flex flex-col md:flex-row justify-between space-x-0 md:space-x-4">
+                            <div class="flex-1 space-y-4">
+                                <div>
+                                    <label for="nombre-producto" class="block text-sm font-medium text-gray-700">Nombre
+                                        del Producto</label>
+                                    <input id="nombre-producto" formControlName="Nombre" type="text" required
+                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
+                                    <div *ngIf="formProduct.get('Nombre')?.invalid && formProduct.get('Nombre')?.touched"
+                                        class="text-red-600">
+                                        El nombre es obligatorio.
+                                    </div>
+                                </div>
+                                <div
+                                    class="border border-dashed border-gray-400 p-20 rounded-md text-center relative h-40">
+                                    <input type="file" id="file-input" formControlName="Imagen"
+                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" multiple>
+                                    <div id="image-preview" class="flex justify-center flex-wrap mt-4"></div>
+                                </div>
+                                <div>
+                                    <label for="descripcion-producto"
+                                        class="block text-sm font-medium text-gray-700">Descripción del Producto</label>
+                                    <textarea id="descripcion-producto" formControlName="Descripcion" required
+                                        class="w-full p-2 h-32 border border-gray-500 rounded-md focus:ring focus:ring-blue-500"></textarea>
+                                    <div *ngIf="formProduct.get('Descripcion')?.invalid && formProduct.get('Descripcion')?.touched"
+                                        class="text-red-600">
+                                        La descripción es obligatoria.
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="sku-producto"
+                                            class="block text-sm font-medium text-gray-700">Categoria</label>
+                                        <select formControlName="Categoria" required
+                                            class="w-full border border-gray-500 p-2 rounded-md">
+                                            <option value="">Selecciona un campo</option>
+                                            <option value="laptops">Laptops</option>
+                                            <option value="desktops">Desktops</option>
+                                            <option value="accesorios">Accesorios</option>
+                                            <option value="componentes">Componentes</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="modelo-producto"
+                                            class="block text-sm font-medium text-gray-700">Modelo</label>
+                                        <input id="modelo-producto" formControlName="Modelo" type="text" required
+                                            class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
+                                        <div *ngIf="formProduct.get('Modelo')?.invalid && formProduct.get('Modelo')?.touched"
+                                            class="text-red-600">
+                                            El modelo es obligatorio.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="marca-producto"
+                                            class="block text-sm font-medium text-gray-700">Marca</label>
+                                        <input id="marca-producto" formControlName="Marca" type="text" required
+                                            class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
+                                        <div *ngIf="formProduct.get('Marca')?.invalid && formProduct.get('Marca')?.touched"
+                                            class="text-red-600">
+                                            La marca es obligatoria.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-4 w-full md:w-1/4 mt-4 md:mt-0">
+                                <div>
+                                    <label for="stock-producto"
+                                        class="block text-sm font-medium text-gray-700">Stock</label>
+                                    <input id="stock-producto" formControlName="Stock" type="number" required
+                                        class="w-full border border-gray-500 p-2 rounded-md mb-4">
+                                    <div *ngIf="formProduct.get('Stock')?.invalid && formProduct.get('Stock')?.touched"
+                                        class="text-red-600">
+                                        El stock es obligatorio y debe ser un número positivo.
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="mr-2">Disponible</span>
+                                        <input type="checkbox" class="toggle-checkbox">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="precio-venta" class="block text-sm font-medium text-gray-700">Precio de
+                                        venta</label>
+                                    <input id="precio-venta" formControlName="PrecioVenta" type="text" required
+                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
+                                    <div *ngIf="formProduct.get('PrecioVenta')?.invalid && formProduct.get('PrecioVenta')?.touched"
+                                        class="text-red-600">
+                                        El precio de venta es obligatorio y debe ser un número positivo.
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="garantia-producto"
+                                        class="block text-sm font-medium text-gray-700">Garantía</label>
+                                    <input id="garantia-producto" formControlName="Garantia" type="text" required
+                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
+                                    <div *ngIf="formProduct.get('Garantia')?.invalid && formProduct.get('Garantia')?.touched"
+                                        class="text-red-600">
+                                        La garantía es obligatoria y debe ser un número positivo.
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="utilidad-porcentaje"
+                                        class="block text-sm font-medium text-gray-700">Utilidad por porcentaje</label>
+                                    <input id="utilidad-porcentaje" formControlName="UtilidadPorcentaje" type="text"
+                                        required
+                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
+                                    <div *ngIf="formProduct.get('UtilidadPorcentaje')?.invalid && formProduct.get('UtilidadPorcentaje')?.touched"
+                                        class="text-red-600">
+                                        La utilidad por porcentaje es obligatoria y debe ser un número válido (ej:
+                                        10.00%).
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="estado-producto"
+                                        class="block text-sm font-medium text-gray-700">Estado</label>
+                                    <select formControlName="Estado" required
+                                        class="w-full border border-gray-500 p-2 rounded-md">
+                                        <option value="">Selecciona un campo</option>
+                                        <option value="en-stock">En stock</option>
+                                        <option value="agotado">Agotado</option>
+                                        <option value="existencias-bajas">Existencias bajas</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-6 space-x-4">
+                            <button type="button" class="border border-red-700 text-red-500 px-4 py-2 rounded-md"
+                                (click)="openModal()">
+                                Descartar
+                            </button>
+                            <button type="submit" class="border border-blue-700 text-blue-600 px-4 py-2 rounded-md">
+                                Crear
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal de Confirmación -->
+<div id="categorias" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50"
+    style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Confirmación</h3>
+        <p class="mb-4">¿Deseas proceder con esta acción?</p>
+        <div class="flex justify-end">
+            <button (click)="confirmDiscard()" id="btn-confirm-yes" type="button"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2">
+                Sí
+            </button>
+            <button (click)="closeModal()" id="btn-confirm-no" type="button"
+                class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+                No
+            </button>
+        </div>
+    </div>
+</div>

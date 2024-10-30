@@ -1,0 +1,94 @@
+<div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+    <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow-xl w-full max-w-sm mx-4 my-8 backdrop-blur-sm transition-all duration-300 ease-in-out hover:shadow-2xl hover:bg-opacity-90 transform hover:-translate-y-1">
+        <h2 class="text-xl font-bold mb-4 text-center text-gray-800">Crea una Cuenta</h2>
+        <form [formGroup]="registerForm" (submit)="register()" class="space-y-3">
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                <input type="text" formControlName="name" id="name" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out"
+                    [ngClass]="{'border-red-500': registerForm.get('name')?.invalid && registerForm.get('name')?.touched}">
+                <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('name')?.errors?.['required']">El nombre es obligatorio.</div>
+                    <div *ngIf="registerForm.get('name')?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres.</div>
+                    <div *ngIf="registerForm.get('name')?.errors?.['maxlength']">El nombre no puede tener más de 30 caracteres.</div>
+                </div>
+            </div>
+
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="apellidos" class="block text-sm font-medium text-gray-700">Apellidos</label>
+                <input type="text" formControlName="apellidos" id="apellidos" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out"
+                    [ngClass]="{'border-red-500': registerForm.get('apellidos')?.invalid && registerForm.get('apellidos')?.touched}">
+                <div *ngIf="registerForm.get('apellidos')?.invalid && registerForm.get('apellidos')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('apellidos')?.errors?.['required']">Los apellidos son obligatorios.</div>
+                    <div *ngIf="registerForm.get('apellidos')?.errors?.['minlength']">Los apellidos deben tener al menos 2 caracteres.</div>
+                    <div *ngIf="registerForm.get('apellidos')?.errors?.['maxlength']">Los apellidos no pueden tener más de 30 caracteres.</div>
+                </div>
+            </div>
+
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="tipo_documento" class="block text-sm font-medium text-gray-700">Tipo de documento</label>
+                <select formControlName="tipo_documento" required class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out">
+                    <option value="" disabled selected>Seleccione</option>
+                    <option *ngFor="let type of documentTypes" [value]="type.value">{{ type.label }}</option>
+                </select>
+                <div *ngIf="registerForm.get('tipo_documento')?.invalid && registerForm.get('tipo_documento')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('tipo_documento')?.errors?.['required']">El tipo de documento es obligatorio.</div>
+                </div>
+            </div>
+            
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="numero_documento" class="block text-sm font-medium text-gray-700">Número de documento</label>
+                <input type="text" formControlName="numero_documento" id="numero_documento" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out"
+                    [ngClass]="{'border-red-500': registerForm.get('numero_documento')?.invalid && registerForm.get('numero_documento')?.touched}">
+                <div *ngIf="registerForm.get('numero_documento')?.invalid && registerForm.get('numero_documento')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('numero_documento')?.errors?.['required']">Número de documento es obligatorio.</div>
+                    <div *ngIf="registerForm.get('numero_documento')?.errors?.['pattern']">El número de documento debe contener solo números.</div>
+                    <div *ngIf="registerForm.get('numero_documento')?.errors?.['minlength']">El número de documento debe tener al menos {{ getRequiredLength() }} caracteres.</div>
+                    <div *ngIf="registerForm.get('numero_documento')?.errors?.['maxlength']">El número de documento no puede exceder {{ getRequiredLength() }} caracteres.</div>
+                </div>
+            </div>
+
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                <input type="email" formControlName="email" id="email" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out"
+                    [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
+                <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('email')?.errors?.['required']">El correo electrónico es obligatorio.</div>
+                    <div *ngIf="registerForm.get('email')?.errors?.['email']">El correo electrónico no es válido.</div>
+                </div>
+            </div>
+
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" formControlName="password" id="password" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out"
+                    [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}">
+                <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</div>
+                    <div *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</div>
+                    <div *ngIf="registerForm.get('password')?.errors?.['weakPassword']">La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial.</div>
+                </div>
+            </div>
+            
+            <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                <label for="rePassword" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+                <input type="password" formControlName="rePassword" id="rePassword" class="mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 ease-in-out"
+                    [ngClass]="{'border-red-500': registerForm.get('rePassword')?.invalid && registerForm.get('rePassword')?.touched || (registerForm.errors?.['mismatch'] && (registerForm.get('rePassword')?.touched || registerForm.get('password')?.touched))}">
+                <div *ngIf="registerForm.get('rePassword')?.invalid && registerForm.get('rePassword')?.touched" class="text-red-500 text-sm">
+                    <div *ngIf="registerForm.get('rePassword')?.errors?.['required']">Confirmar contraseña es obligatorio.</div>
+                </div>
+                <div *ngIf="registerForm.errors?.['mismatch'] && (registerForm.get('rePassword')?.touched || registerForm.get('password')?.touched)" class="text-red-500 text-sm">
+                    Las contraseñas no coinciden.
+                </div>
+            </div>
+
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105">
+                Registrar cuenta
+            </button>
+        </form>
+        <p class="mt-4 text-center text-xs text-gray-600">
+            ¿Ya tiene una cuenta?
+            <a [routerLink]="['/auth/login']" routerLinkActive="router-link-active"  class="font-medium text-indigo-600 hover:text-indigo-500 transition-all duration-300 ease-in-out">
+                Acceso
+            </a>
+        </p>
+    </div>
+</div>

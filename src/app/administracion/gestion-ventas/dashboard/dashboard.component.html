@@ -1,0 +1,130 @@
+<!-- Contenido principal -->
+<div class="w-full mt-2 overflow-y-auto rounded-lg">
+    <div id="scrollable-content"
+        class="relative flex flex-col w-full h-full p-2 text-black bg-white shadow-md rounded-xl">
+        <div class="relative flex flex-col w-full overflow-y-auto bg-white">
+            <!-- Cuadros de resumen -->
+            <div class="grid flex-grow lg:grid-cols-4 gap-4 mb-4">
+                <div class="bg-red-300 shadow-sm rounded p-4">
+                    <h3 class="text-black font-bold">Órdenes</h3>
+                    <p class="text-2xl font-bold">640</p>
+                    <p class="text-sm text-gray-500">1420 Completadas</p>
+                </div>
+
+                <div class="bg-green-300 shadow-sm rounded p-4">
+                    <h3 class="text-black font-bold">Ganancia</h3>
+                    <p class="text-2xl font-bold">S/.57K</p>
+                    <p class="text-sm text-gray-500">99,640 Ingresos</p>
+                </div>
+
+                <div class="bg-yellow-200 shadow-sm rounded p-4">
+                    <h3 class="text-black font-bold">Clientes</h3>
+                    <p class="text-2xl font-bold">8572</p>
+                    <p class="text-sm text-gray-500">25402 Registrados</p>
+                </div>
+
+                <div class="bg-blue-300 shadow-sm rounded p-4">
+                    <h3 class="text-black font-bold">Proveedores</h3>
+                    <p class="text-2xl font-bold">805</p>
+                    <p class="text-sm text-gray-500">85 Respondidos</p>
+                </div>
+            </div>
+
+            <!-- Nueva sección con lista de contactos y línea de tiempo -->
+            <div class="grid flex-grow lg:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 mb-4">
+                <!-- Lista de Contactos -->
+                <div class="bg-white p-4 rounded-sm shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">Contactos</h2>
+                    <ul>
+                        <li class="flex items-center justify-between mb-3">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="h-16 w-16">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                <div>
+                                    <p class="font-medium">Juan Pérez</p>
+                                    <p class="text-sm text-gray-500">juan.perezexample.com</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold text-white rounded bg-blue-500">Ventas</span>
+                        </li>
+                        <li class="flex items-center justify-between mb-3">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="h-16 w-16">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                <div>
+                                    <p class="font-medium">Ana García</p>
+                                    <p class="text-sm text-gray-500">ana.garciexample.com</p>
+                                </div>
+                            </div>
+                            <span
+                                class="px-2 py-1 text-xs font-semibold text-white rounded bg-green-500">Marketing</span>
+                        </li>
+                        <!-- Puedes replicar el bloque anterior para más contactos -->
+                    </ul>
+                </div>
+
+                <!-- Los más vendidos -->
+                <div class="bg-white shadow-md rounded-sm p-6 flex-grow mb-4">
+                    <h2 class="text-lg font-bold mb-4">Los más vendidos</h2>
+                    <ul class="space-y-4">
+                        <li>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="bg-red-500 text-white p-2 rounded-lg mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 3v18h18V3H3z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-900">Producto A</p>
+                                        <p class="text-sm text-gray-500">Descripción de producto A</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="bg-red-500 text-white p-2 rounded-lg mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 3v18h18V3H3z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-900">Producto B</p>
+                                        <p class="text-sm text-gray-500">Descripción de producto B</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Puedes replicar el bloque anterior para más productos -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,749 @@
+<!-- Contenido principal -->
+<div class="w-full mt-2 overflow-y-auto rounded-lg">
+	<div id="scrollable-content"
+		class="relative flex flex-col w-full h-full p-2 text-black bg-white shadow-md rounded-xl">
+		<div class="relative flex flex-col w-full overflow-y-auto bg-white">
+			<!-- Apartir de qui, poner los demas contenido-->
+			<div class="flex items-center justify-between p-2 border-b">
+				<div class="flex items-center justify-between p-2">
+					<div class="flex items-center justify-between">
+						<h2 class="bg-clip-text text-gray-600 text-xl font-bold">
+							Buscar ordenes
+						</h2>
+					</div>
+					<div class="flex items-center justify-between p-2">
+						<button (click)="toggleDropdown()" class="">
+							<ng-container *ngIf="isDropdownOpen; else plusIcon">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+									class="size-6">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+										class="size-5">
+										<path fill-rule="evenodd"
+											d="M9.47 4.72a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 6.31l-3.72 3.72a.75.75 0 1 1-1.06-1.06l4.25-4.25Zm-4.25 9.25 4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 11.31l-3.72 3.72a.75.75 0 0 1-1.06-1.06Z"
+											clip-rule="evenodd" />
+									</svg>
+								</svg>
+							</ng-container>
+							<ng-template #plusIcon>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+									class="size-6">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+										class="size-5">
+										<path fill-rule="evenodd"
+											d="M9.47 15.28a.75.75 0 0 0 1.06 0l4.25-4.25a.75.75 0 1 0-1.06-1.06L10 13.69 6.28 9.97a.75.75 0 0 0-1.06 1.06l4.25 4.25ZM5.22 6.03l4.25 4.25a.75.75 0 0 0 1.06 0l4.25-4.25a.75.75 0 0 0-1.06-1.06L10 8.69 6.28 4.97a.75.75 0 0 0-1.06 1.06Z"
+											clip-rule="evenodd" />
+									</svg>
+								</svg>
+							</ng-template>
+						</button>
+					</div>
+				</div>
+				<div class="flex items-center justify-end p-2">
+					<button (click)="navigateTo('administracion/gestion/servicioTecnico/nuevo')"
+						class="bg-blue-400 rounded-md py-2 px-4 text-center text-sm font-semibold text-white flex items-center space-x-2">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+							stroke="currentColor" class="size-6">
+							<path stroke-linecap="round" stroke-linejoin="round"
+								d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+
+						<span>Nuevo registro</span>
+					</button>
+				</div>
+			</div>
+			<div [ngClass]="{ 'hidden': !isDropdownOpen, 'block': isDropdownOpen }" class="overflow-y-auto">
+				<div class="flex items-center justify-between p-4">
+					<button
+						class="bg-green-400 rounded-md py-2 px-2 text-center text-sm font-semibold text-white flex items-center space-x-2">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+							<path fill-rule="evenodd"
+								d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+								clip-rule="evenodd" />
+						</svg>
+						<span>Buscar</span>
+					</button>
+				</div>
+				<div class="relative mx-4 mt-4  text-slate-700 rounded-none bg-clip-border mb-2">
+					<div class="grid flex-grow md:grid-cols-4 gap-4">
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Nombres del cliente
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path fill-rule="evenodd"
+											d="M10 3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v9a2 2 0 0 0 2 2h8a2 2 0 0 1-2-2V3ZM4 4h4v2H4V4Zm4 3.5H4V9h4V7.5Zm-4 3h4V12H4v-1.5Z"
+											clip-rule="evenodd" />
+										<path d="M13 5h-1.5v6.25a1.25 1.25 0 1 0 2.5 0V6a1 1 0 0 0-1-1Z" />
+									</svg>
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Nombre del producto
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path fill-rule="evenodd"
+											d="M5 4a3 3 0 0 1 6 0v1h.643a1.5 1.5 0 0 1 1.492 1.35l.7 7A1.5 1.5 0 0 1 12.342 15H3.657a1.5 1.5 0 0 1-1.492-1.65l.7-7A1.5 1.5 0 0 1 4.357 5H5V4Zm4.5 0v1h-3V4a1.5 1.5 0 0 1 3 0Zm-3 3.75a.75.75 0 0 0-1.5 0v1a3 3 0 1 0 6 0v-1a.75.75 0 0 0-1.5 0v1a1.5 1.5 0 1 1-3 0v-1Z"
+											clip-rule="evenodd" />
+									</svg>
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Categoria
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path
+											d="M3 3.5A1.5 1.5 0 0 1 4.5 2h1.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12A1.5 1.5 0 0 0 9.62 4H11.5A1.5 1.5 0 0 1 13 5.5v1H3v-3ZM3.081 8a1.5 1.5 0 0 0-1.423 1.974l1 3A1.5 1.5 0 0 0 4.081 14h7.838a1.5 1.5 0 0 0 1.423-1.026l1-3A1.5 1.5 0 0 0 12.919 8H3.081Z" />
+									</svg>
+
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Marca
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path fill-rule="evenodd"
+											d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z"
+											clip-rule="evenodd" />
+									</svg>
+
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+						<!-- ++ -->
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Precio total
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path
+											d="M6.375 5.5h.875v1.75h-.875a.875.875 0 1 1 0-1.75ZM8.75 10.5V8.75h.875a.875.875 0 0 1 0 1.75H8.75Z" />
+										<path fill-rule="evenodd"
+											d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0ZM7.25 3.75a.75.75 0 0 1 1.5 0V4h2.5a.75.75 0 0 1 0 1.5h-2.5v1.75h.875a2.375 2.375 0 1 1 0 4.75H8.75v.25a.75.75 0 0 1-1.5 0V12h-2.5a.75.75 0 0 1 0-1.5h2.5V8.75h-.875a2.375 2.375 0 1 1 0-4.75h.875v-.25Z"
+											clip-rule="evenodd" />
+									</svg>
+
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Fecha de inicio
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path
+											d="M5.75 7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM5 10.25a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0ZM10.25 7.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM7.25 8.25a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0ZM8 9.5A.75.75 0 1 0 8 11a.75.75 0 0 0 0-1.5Z" />
+										<path fill-rule="evenodd"
+											d="M4.75 1a.75.75 0 0 0-.75.75V3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2V1.75a.75.75 0 0 0-1.5 0V3h-5V1.75A.75.75 0 0 0 4.75 1ZM3.5 7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v4.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V7Z"
+											clip-rule="evenodd" />
+									</svg>
+
+								</div>
+								<input id="fecha-venta" type="date"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500">
+							</div>
+						</div>
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Metodo de pago
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path
+											d="M6.375 5.5h.875v1.75h-.875a.875.875 0 1 1 0-1.75ZM8.75 10.5V8.75h.875a.875.875 0 0 1 0 1.75H8.75Z" />
+										<path fill-rule="evenodd"
+											d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0ZM7.25 3.75a.75.75 0 0 1 1.5 0V4h2.5a.75.75 0 0 1 0 1.5h-2.5v1.75h.875a2.375 2.375 0 1 1 0 4.75H8.75v.25a.75.75 0 0 1-1.5 0V12h-2.5a.75.75 0 0 1 0-1.5h2.5V8.75h-.875a2.375 2.375 0 1 1 0-4.75h.875v-.25Z"
+											clip-rule="evenodd" />
+									</svg>
+
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+						<div class="mb-4">
+							<label for="" class="block text-sm font-medium text-gray-700 mb-1">
+								Cantidad
+							</label>
+							<div class="flex items-center">
+								<div
+									class="bg-green-400 w-10 h-10 flex justify-center items-center rounded-l-md text-white font-bold p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+										class="size-4">
+										<path
+											d="M5 3.5A1.5 1.5 0 0 1 6.5 2h3A1.5 1.5 0 0 1 11 3.5H5ZM4.5 5A1.5 1.5 0 0 0 3 6.5v.041a3.02 3.02 0 0 1 .5-.041h9c.17 0 .337.014.5.041V6.5A1.5 1.5 0 0 0 11.5 5h-7ZM12.5 8h-9A1.5 1.5 0 0 0 2 9.5v3A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5v-3A1.5 1.5 0 0 0 12.5 8Z" />
+									</svg>
+								</div>
+								<input id="numero-documento-secundario" type="text"
+									class="w-full border border-gray-500 p-2 focus:ring focus:ring-blue-500 rounded-r-md">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="relative mx-4 mt-4  text-slate-700 bg-white rounded-none bg-clip-border">
+
+				<div class="flex items-center justify-between p-4">
+					<div class="text-2xl font-extrabold ...">
+						<span class="bg-clip-text text-black">
+							Ordenes de servicio tecnico
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="p-0 overflow-scroll">
+				<table class="w-full mt-4 text-left table-auto min-w-max ">
+					<thead>
+						<tr>
+
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Código</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Nombre del Cliente</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Apellido Paterno</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Apellido Materno</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Telefono</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Correo</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Travajador</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center justify-between gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Fecha de Inicio</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Fecha de Fin</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Hora de Inicio</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Hora de Fin</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Descripción del Servicio</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Precio Unitario</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Total</p>
+								</div>
+							</th>
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Estado</p>
+								</div>
+							</th>
+
+							<th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50">
+								<div
+									class="flex items-center gap-2 font-sans text-sm font-bold leading-none text-black">
+									<p>Accion</p>
+								</div>
+							</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										001
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Dana Moore
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Gamarra
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Peres
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										999 999 999
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										clinte&gmail.com
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Jhosmir Jordans
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										12/09/2024
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										01/10/2024
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										hh:mm:ss
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										hh:mm:ss
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Instalacion y armado de una computadora y sus Componentes
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										$000.00
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										$000.00
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3 bg-blue-400 rounded-full p-1">
+									<p class="text-sm font-semibold text-slate-700">
+										Finalizado
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex space-x-2">
+									<button id="btnOpenEdit" class="bg-green-400 p-2 rounded-full btnOpenModal"
+										aria-label="">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+											stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round"
+												d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+										</svg>
+									</button>
+
+									<button class="bg-red-400 p-2 rounded-full btn-open-confirm" data-modal-id="1">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+											stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round"
+												d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+										</svg>
+									</button>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										001
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Dana Moore
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Gamarra
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Peres
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										999 999 999
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										clinte&gmail.com
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Jhosmir Jordans
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										12/09/2024
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										01/10/2024
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										hh:mm:ss
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										hh:mm:ss
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										Instalacion y armado de una computadora y sus Componentes
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										$000.00
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3">
+									<p class="text-sm font-semibold text-slate-700">
+										$000.00
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex items-center gap-3 bg-blue-400 rounded-full p-1">
+									<p class="text-sm font-semibold text-slate-700">
+										Finalizado
+									</p>
+								</div>
+							</td>
+							<td class="p-4 border-b border-slate-200">
+								<div class="flex space-x-2">
+									<button id="btnOpenEdit" class="bg-green-400 p-2 rounded-full btnOpenModal"
+										aria-label="">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+											stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round"
+												d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+										</svg>
+									</button>
+
+									<button class="bg-red-400 p-2 rounded-full btn-open-confirm" data-modal-id="1">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+											stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+											<path stroke-linecap="round" stroke-linejoin="round"
+												d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+										</svg>
+									</button>
+								</div>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal de Confirmación de eiliminar en general un producto -->
+<!-- Actualizar Proveedor -->
+<div id="modalEdit" class="flex flex-col fixed inset-0 items-center justify-center hidden z-50"
+	style="background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(1px);">
+	<div class="bg-white p-1 rounded-lg shadow-lg">
+		<div class="w-full max-w-md bg-white rounded-lg mx-2 p-4 relative overflow-y-auto"
+			style="padding-top: 1vh; padding-bottom: 1vh; min-height: 30vh; max-height: 85vh;">
+			<button class="absolute top-2 right-2 text-black text-4xl md:text-6xl lg:text-7xl font-bold"
+				id="btnCloseEdit" (click)="openConfirmClearModal()">
+				×
+			</button>
+			<div class="w-full max-h-[75vh]">
+				<div class="flex justify-between items-center mb-4">
+					<h2 class="text-lg font-semibold text-gray-800">Actualizar Servicio</h2>
+				</div>
+				<form>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Nombre de cliente</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Apellido Paterno</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Apellido Materno</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Telefono</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Correo</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Travajador</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="flex space-x-4 mb-6">
+						<div>
+							<div class="flex-1">
+								<label class="block text-sm text-gray-700">Fecha de Emicion</label>
+								<input type="date" id="date" name="date"
+									class="block w-full border border-gray-300 rounded-lg py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+							</div>
+						</div>
+						<div>
+							<div class="flex-1">
+								<label class="block text-sm text-gray-700">Fecha de Finilizacion</label>
+								<input type="date" id="date" name="date"
+									class="block w-full border border-gray-300 rounded-lg py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+							</div>
+						</div>
+					</div>
+					<div class="flex space-x-4 mb-6">
+						<div class="mb-4">
+							<label class="block text-sm text-gray-700">Hora de inicio</label>
+							<input type="text"
+								class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+						</div>
+						<div class="mb-4">
+							<label class="block text-sm text-gray-700">Hora de fin</label>
+							<input type="text"
+								class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+						</div>
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Descripcion del servicio</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Precio unitario</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Total</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+
+					<div class="mb-4">
+						<div class="flex-1">
+							<label class="block text-sm text-gray-700">Estado</label>
+							<select
+								class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500">
+								<option value="" disabled selected>Seleccione un estado</option>
+								<option class="bg-green-100">Activo</option>
+								<option class="bg-red-100">Inactivo</option>
+								<option class="bg-yellow-100">En espera</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="mb-4">
+						<label class="block text-sm text-gray-700">Direccion</label>
+						<input type="text"
+							class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" />
+					</div>
+					<!-- Campos del formulario -->
+					<div class="flex justify-end items-center gap-5">
+						<button type="button" class="flex text-red-800" id="btnCancelEdit"
+							(click)="openConfirmClearModal()">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+								stroke="currentColor" class="size-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+							</svg>
+							<span>Cancelar</span>
+						</button>
+						<button type="button" class="flex text-blue-800" id="btnSaveEdit">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+								stroke="currentColor" class="size-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+							</svg>
+							<span>Guardar</span>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal de Confirmación-->
+<div id="confirm-clear-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
+	style="background-color: rgba(0, 0, 0, 0.5);">
+	<div class="bg-white rounded-lg shadow-lg p-6 w-96">
+		<h3 class="text-lg font-semibold mb-4">Confirmación</h3>
+		<p class="mb-4">¿Deseas proceder con esta acción?</p>
+		<div class="flex justify-end">
+			<button id="btn-confirm-yes" type="button"
+				class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2">Sí</button>
+			<button id="btn-confirm-no" type="button"
+				class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">No</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,48 @@
+<body class="min-h-screen flex items-center justify-center bg-cover bg-center"
+  style="background-image: url('https://img.freepik.com/fotos-premium/ilustracion-montana-fondo-azul_997534-1349.jpg');">
+
+  <div class="bg-white p-8 rounded-lg shadow-md w-96 relative">
+    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-4 py-2 rounded">
+      INGRESO
+    </div>
+    <h2 class="text-2xl font-semibold mb-2 text-center">Bienvenido</h2>
+    <p class="text-gray-600 text-sm mb-6 text-center">
+      Utilice el formulario para iniciar sesión
+    </p>
+
+    <form [formGroup]="loginForm" (submit)="login()">
+      <div class="relative flex flex-row items-center mb-7">
+        <input formControlName="email" id="email" type="email" required class="peer text-black pl-2 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full block text-left
+                 border border-black rounded-[10px] m-0 p-0 outline-0 
+                 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/30"
+          [ngClass]="{ 'border-red-500': loginForm.get('email')?.invalid && loginForm.get('email')?.touched }" />
+        <label for="email"
+          class="cursor-text text-black inline-block z-0 text-sm font-normal absolute duration-300 transform origin-[0] translate-x-[32px] peer-focus:text-teal-500 peer-focus:translate-x-[8px] peer-focus:-translate-y-[36px] peer-[:not(:placeholder-shown)]:-translate-y-[36px] peer-[:not(:placeholder-shown)]:translate-x-[8px]">
+          Email
+        </label>
+      </div>
+
+      <div class="relative flex flex-row items-center mb-4">
+        <input formControlName="password" id="password" type="password" required class="peer text-black pl-2 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full block text-left
+                 border border-black rounded-[10px] m-0 p-0 outline-0 
+                 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/30"
+          [ngClass]="{ 'border-red-500': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }" />
+        <label for="password"
+          class="cursor-text text-black inline-block z-0 text-sm font-normal absolute duration-300 transform origin-[0] translate-x-[32px] peer-focus:text-teal-500 peer-focus:translate-x-[8px] peer-focus:-translate-y-[36px] peer-[:not(:placeholder-shown)]:-translate-y-[36px] peer-[:not(:placeholder-shown)]:translate-x-[8px]">
+          Contraseña
+        </label>
+      </div>
+
+      <button type="submit"
+        class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">
+        Acceder
+      </button>
+    </form>
+
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">¿No tienes una cuenta?</p>
+      <a [routerLink]="['/auth/register']" routerLinkActive="router-link-active"
+        class="text-blue-600 hover:underline">Regístrate aquí</a>
+    </div>
+  </div>
+</body>

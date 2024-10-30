@@ -1,0 +1,35 @@
+.card {
+  transition: background 0.3s ease; /* Suaviza el cambio de color */
+  text-align: left;
+}
+
+.card:hover {
+  background: linear-gradient(
+    to right,
+    #441b57,
+    #6b1b70,
+    #7a2b3f
+  ); /* Degradado similar al de la imagen al hacer hover */
+}
+
+.card a:hover {
+  color: #a078ff; /* Color del enlace al hacer hover */
+}
+
+.custom-gradient {
+  background: linear-gradient(
+    to right,
+    #762a85,
+    #f472b6,
+    #d8b4fe
+  ); /* De rosa a morado claro */
+  background-clip: text; /* Propiedad estándar */
+  -webkit-background-clip: text; /* Prefijo para navegadores basados en WebKit (Safari, Chrome) */
+  color: transparent;
+}
+
+.custom-gradient {
+  background: linear-gradient(90deg, #4f46e5, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
