@@ -26,7 +26,7 @@ import { ServicioTecnicoComponent } from "./administracion/relaciones-proveedore
 import { CatalogComponent } from "./index/catalog/catalog.component";
 
 export const routes: Routes = [
-    { path: '/', component: CatalogComponent},
+    { path: '', component: CatalogComponent},
     { path: 'auth/login', component: LoginComponent },
     { path: 'auth/register', component: RegisterComponent },
     { path: 'administracion/inicio', component: InicioComponent },
@@ -51,6 +51,6 @@ export const routes: Routes = [
     { path: 'administracion/gestion/usuarios/puestos/nuevo', component: NuevoPuestoComponent },
     { path: 'administracion/gestion/usuarios/cliente/nuevo', component: NuevoClienteComponent },
     { path: 'administracion/gestion/usuarios/cliente', component: ClientesComponent },
-    { path: '**', redirectTo: 'auth/register', pathMatch: 'full' },
+    { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
