@@ -49,6 +49,6 @@ export const routes: Routes = [
     { path: 'administracion/gestion/usuarios/puestos/nuevo', component: NuevoPuestoComponent },
     { path: 'administracion/gestion/usuarios/cliente/nuevo', component: NuevoClienteComponent },
     { path: 'administracion/gestion/usuarios/cliente', component: ClientesComponent },
-    { path: '**', redirectTo: 'administracion/inicio', pathMatch: 'full' },
+    { path: '**', redirectTo: 'auth/register', pathMatch: 'full' },
 ];
 
