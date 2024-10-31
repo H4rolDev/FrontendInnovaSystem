@@ -23,8 +23,10 @@ import { InicioComponent } from "./administracion/gestion-ventas/inicio/inicio.c
 import { VentasComponent } from "./administracion/gestion-ventas/ventas/ventas.component";
 import { NuevoServicioComponent } from "./administracion/relaciones-proveedores/nuevo-servicio/nuevo-servicio.component";
 import { ServicioTecnicoComponent } from "./administracion/relaciones-proveedores/servicio-tecnico/servicio-tecnico.component";
+import { CatalogComponent } from "./index/catalog/catalog.component";
 
 export const routes: Routes = [
+    { path: '/', component: CatalogComponent},
     { path: 'auth/login', component: LoginComponent },
     { path: 'auth/register', component: RegisterComponent },
     { path: 'administracion/inicio', component: InicioComponent },
