@@ -16,9 +16,9 @@ export class CategoryService {
       `${environment.backendBaseUrl}/api/v1/admin/categoria`);
   }
   
-  remove(brandId: number): Observable<any> {
+  remove(categoriaId: number): Observable<any> {
     return this.http.delete<any>(
-      `${environment.backendBaseUrl}/api/v1/admin/categoria/${brandId}`);
+      `${environment.backendBaseUrl}/api/v1/admin/categoria/${categoriaId}`);
   }
 
   create(body: CategoryBody): Observable<Category> {

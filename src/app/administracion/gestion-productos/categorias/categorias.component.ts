@@ -1,7 +1,9 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Category, CategoryBody } from 'src/app/shared/models/category';
+import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
   selector: 'app-categorias',
@@ -11,6 +13,10 @@ import { Router } from '@angular/router';
   imports: [NgFor, NgIf, NgClass, FormsModule]
 })
 export class CategoriasComponent implements OnInit {
+  cargaDatos: 'none' | 'loading' | 'done' | 'error' = "none";
+  createCategoryState: 'none' | 'loading' | 'done' | 'error' = "none";
+  showFormCategory: 'none' | 'edit' | 'add' = 'none';
+  categorys: Category[] = [];
   modalEdit!: HTMLElement | null;
   confirmClearModal!: HTMLElement | null;
   btnCloseEdit!: HTMLElement | null;
@@ -18,13 +24,77 @@ export class CategoriasComponent implements OnInit {
   btnSaveEdit!: HTMLElement | null;
   btnConfirmYes!: HTMLButtonElement | null;
   btnConfirmNo!: HTMLButtonElement | null;
-
-  constructor(private router: Router) { }
+  formCategory: FormGroup;
+  constructor(
+    private router: Router,
+    private categoryService: CategoryService,
+    private fb: FormBuilder
+  ) { 
+    this.formCategory = this.fb.group({
+      name: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]]
+    });
+  }
 
   ngOnInit(): void {
+    // Aplicando las APIs
+    this.listAll();
+    
     // Asigna los elementos del DOM
     this.assignDOMElements();
     this.initializeEventListeners();
+  }
+
+  // Aplicando las APIs
+  listAll(){
+    this.cargaDatos = 'loading';
+    this.categoryService.list().subscribe({
+      next: (data) => {
+        this.cargaDatos = 'done',
+        this.categorys = data;
+      },
+      error: (_) => {
+        this.cargaDatos = 'error';
+      }
+    });
+  }
+
+  addCategory(){
+    this.showFormCategory = "add";
+    this.createCategoryState = 'none';
+  }
+
+  removeBrand(category: Category) {
+    category.remove = true;
+  }
+
+  confirmDelete(categoryId: number) {
+    this.categoryService.remove(categoryId).subscribe({
+      next: (res) => {
+        // this.listAll();
+        this.categorys = this.categorys.filter(b => b.id != categoryId);
+      },
+      error: (err) => {}
+    });
+  }
+  
+  cancelDelete(category: Category) {
+    category.remove = false;
+  }
+
+  createCategory(){
+    console.log(this.formCategory);
+    this.createCategoryState = 'loading';
+    this.categoryService.create(this.formCategory.value as CategoryBody).subscribe({
+      next: (data) => {
+        this.createCategoryState = 'done';
+        // this.listAll();
+        this.categorys.push(data);
+      },
+      error: (err) => {
+        this.createCategoryState = 'error';
+      }
+    });
   }
 
   // Asigna referencias a los elementos del DOM
