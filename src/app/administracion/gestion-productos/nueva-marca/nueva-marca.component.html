@@ -9,45 +9,37 @@
 
                 <div class="mb-8">
                     <h1 class="text-2xl font-extrabold mb-4">Nueva marca</h1>
+                    <!-- Formulario de creación de marca -->
+                    <!-- Formulario de creación de marca -->
+                <form [formGroup]="formBrand" (ngSubmit)="createBrand()">
+                    <div>
+                      <label for="nombre">Nombre</label>
+                      <input id="nombre" formControlName="nombre" type="text" />
+                      <div *ngIf="formBrand.get('nombre')?.invalid && formBrand.get('nombre')?.touched" class="error">
+                        El nombre es requerido y debe tener al menos 3 caracteres.
+                      </div>
+                    </div>
+                
+                    <div>
+                      <label for="descripcion">Descripción</label>
+                      <textarea id="descripcion" formControlName="descripcion"></textarea>
+                      <div *ngIf="formBrand.get('descripcion')?.invalid && formBrand.get('descripcion')?.touched" class="error">
+                        La descripción es requerida y debe tener al menos 10 caracteres.
+                      </div>
+                    </div>                
+                    <button type="submit" [disabled]="formBrand.invalid || createBrandState === 'loading'">
+                      {{ createBrandState === 'loading' ? 'Creando...' : 'Crear Marca' }}
+                    </button>
+                    <button class="ml-3" type="button" (click)="cancelarCreacion()">Cancelar</button>
+                </form>
 
-                    <form id="product-form" [formGroup]="formBrand" (submit)="createBrand()">
-                        <div class="flex flex-col md:flex-row justify-between space-x-0 md:space-x-4">
-                            <div class="flex-1 space-y-4">
-                                <div>
-                                    <label for="numero-documento-secundario"
-                                        class="block text-sm font-medium text-gray-700">Nombre</label>
-                                    <input id="numero-documento-secundario" type="text" required
-                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
-                                </div>
-                                <div>
-                                    <label for="numero-documento-secundario"
-                                        class="block text-sm font-medium text-gray-700">Descripcion</label>
-                                    <input id="numero-documento-secundario" type="text" required
-                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
-                                </div>
-                                <div class="flex-1">
-                                    <label class="block text-sm text-gray-700">Estado</label>
-                                    <select
-                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500"
-                                        required>
-                                        <option value="" disabled selected>Seleccione un estado</option>
-                                        <option class="bg-green-100">Activo</option>
-                                        <option class="bg-red-100">Inactivo</option>
-                                        <option class="bg-yellow-100">Suspendido</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end mt-6 space-x-4">
-                            <button type="button" class="border border-red-700 text-red-500 px-4 py-2 rounded-md"
-                                (click)="openModal()">
-                                Descartar
-                            </button>
-                            <button type="submit"
-                                class="border border-blue-700 text-blue-600 px-4 py-2 rounded-md">Crear</button>
-                        </div>
-                    </form>
+                  <!-- Modal de confirmación -->
+                <div *ngIf="showConfirmationModal" class="modal-backdrop">
+                  <div class="modal">
+                    <p>¡Marca creada exitosamente!</p>
+                    <button id="btn-confirm-ok" (click)="hideConfirmationModal()">Cerrar</button>
+                  </div>
+                </div>
                 </div>
             </div>
         </div>

@@ -2,9 +2,7 @@
   style="background-image: url('https://img.freepik.com/fotos-premium/ilustracion-montana-fondo-azul_997534-1349.jpg');">
 
   <div class="bg-white p-8 rounded-lg shadow-md w-96 relative">
-    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-4 py-2 rounded">
-      INGRESO
-    </div>
+    
     <h2 class="text-2xl font-semibold mb-2 text-center">Bienvenido</h2>
     <p class="text-gray-600 text-sm mb-6 text-center">
       Utilice el formulario para iniciar sesión
@@ -18,7 +16,7 @@
           [ngClass]="{ 'border-red-500': loginForm.get('email')?.invalid && loginForm.get('email')?.touched }" />
         <label for="email"
           class="cursor-text text-black inline-block z-0 text-sm font-normal absolute duration-300 transform origin-[0] translate-x-[32px] peer-focus:text-teal-500 peer-focus:translate-x-[8px] peer-focus:-translate-y-[36px] peer-[:not(:placeholder-shown)]:-translate-y-[36px] peer-[:not(:placeholder-shown)]:translate-x-[8px]">
-          Email
+          
         </label>
       </div>
 
@@ -29,7 +27,7 @@
           [ngClass]="{ 'border-red-500': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }" />
         <label for="password"
           class="cursor-text text-black inline-block z-0 text-sm font-normal absolute duration-300 transform origin-[0] translate-x-[32px] peer-focus:text-teal-500 peer-focus:translate-x-[8px] peer-focus:-translate-y-[36px] peer-[:not(:placeholder-shown)]:-translate-y-[36px] peer-[:not(:placeholder-shown)]:translate-x-[8px]">
-          Contraseña
+          
         </label>
       </div>
 

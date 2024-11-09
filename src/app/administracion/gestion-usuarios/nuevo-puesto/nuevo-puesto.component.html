@@ -8,40 +8,47 @@
                 <div id="error-message" class="hidden text-red-500 mb-4"></div>
 
                 <div class="mb-8">
-                    <h1 class="text-2xl font-extrabold mb-4">Nuevo Puesto</h1>
-                    <form id="product-form">
-                        <div class="flex flex-col md:flex-row justify-between space-x-0 md:space-x-4">
-                            <div class="flex-1 space-y-4">
-                                <div>
-                                    <label for="nombre-completo"
-                                        class="block text-sm font-medium text-gray-700">Nombre</label>
-                                    <input id="nombre-completo" type="text" required
-                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
-                                </div>
-
-                                <div>
-                                    <label for="numero-documento-secundario"
-                                        class="block text-sm font-medium text-gray-700">Descripcion</label>
-                                    <input id="numero-documento-secundario" type="text" required
-                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
-                                </div>
-                                <div>
-                                    <label for="numero-documento-secundario"
-                                        class="block text-sm font-medium text-gray-700">Sueldo Base</label>
-                                    <input id="numero-documento-secundario" type="text" required
-                                        class="w-full border border-gray-500 p-2 rounded-md focus:ring focus:ring-blue-500">
-                                </div>
+                    <h1 class="text-2xl font-extrabold mb-4">Nueva Puesto</h1>
+                    <!-- Formulario de creación de marca -->
+                    <!-- Formulario de creación de marca -->
+                    <form [formGroup]="formPuesto" (ngSubmit)="createPuesto()">
+                        <div>
+                          <label for="nombre">Nombre</label>
+                          <input id="nombre" formControlName="nombre" type="text" />
+                          <div *ngIf="formPuesto.get('nombre')?.invalid && formPuesto.get('nombre')?.touched" class="error">
+                            El nombre es requerido y debe tener al menos 3 caracteres.
+                          </div>
+                        </div>
+                    
+                        <div>
+                          <label for="descripcion">Descripción</label>
+                          <textarea id="descripcion" formControlName="descripcion"></textarea>
+                          <div *ngIf="formPuesto.get('descripcion')?.invalid && formPuesto.get('descripcion')?.touched" class="error">
+                            La descripción es requerida y debe tener al menos 10 caracteres.
+                          </div>
+                        </div>      
+                        
+                        <div>
+                            <label for="salarioBase">Salario Base</label>
+                            <input id="salarioBase" formControlName="salarioBase" type="number" />
+                            <div *ngIf="formPuesto.get('salarioBase')?.invalid && formPuesto.get('salarioBase')?.touched" class="error">
+                              El salario base debe de estar entre S/.1025 y S/.9999
                             </div>
-                        </div>
-                        <div class="flex justify-end mt-6 space-x-4">
-                            <button type="button" class="border border-red-700 text-red-500 px-4 py-2 rounded-md"
-                                (click)="openModal()">
-                                Descartar
-                            </button>
-                            <button type="submit"
-                                class="border border-blue-700 text-blue-600 px-4 py-2 rounded-md">Crear</button>
-                        </div>
+                          </div>  
+
+                        <button type="submit" [disabled]="formPuesto.invalid || createPuestoState === 'loading'">
+                          {{ createPuestoState === 'loading' ? 'Creando...' : 'Crear Marca' }}
+                        </button>
+                        <button class="ml-3" type="button" (click)="cancelarCreacion()">Cancelar</button>
                     </form>
+
+                  <!-- Modal de confirmación -->
+                <div *ngIf="showConfirmationModal" class="modal-backdrop">
+                  <div class="modal">
+                    <p>¡Puesto creada exitosamente!</p>
+                    <button id="btn-confirm-ok" (click)="hideConfirmationModal()">Cerrar</button>
+                  </div>
+                </div>
                 </div>
             </div>
         </div>

@@ -1,8 +1,8 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf, NgStyle, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Brand, BrandBody } from 'src/app/shared/models/brand';
+import { Marca, MarcaBody } from 'src/app/shared/models/marca';
 import { BrandService } from 'src/app/shared/services/brand.service';
 
 @Component({
@@ -10,13 +10,24 @@ import { BrandService } from 'src/app/shared/services/brand.service';
   templateUrl: './marcas.component.html',
   styleUrls: ['./marcas.component.css'],
   standalone: true,
-  imports: [NgFor, NgIf, NgClass, FormsModule]
+  imports: [NgFor, NgIf, NgClass, FormsModule, ReactiveFormsModule, NgSwitch, NgSwitchCase, NgStyle]
 })
 export class MarcasComponent implements OnInit {
   cargaDatos: 'none' | 'loading' | 'done' | 'error' = "none";
   createBrandState: 'none' | 'loading' | 'done' | 'error' = "none";
   showFormBrand: 'none' | 'edit' | 'add' = 'none';
-  brands: Brand[] = [];
+  brands: Marca[] = [];
+
+  isModalOpen = false; 
+  selectedBrand: Marca | null = null; 
+
+  mostrarModal = false;
+  mensajeConfirmacion = '';
+  confirmacionId: number | null = null;
+  nuevoEstadoConfirmacion: boolean = false;
+  selectedBrandId: number | null = null; // ID de la marca seleccionada para editar
+updateBrandState = 'idle';
+  
   modalEdit!: HTMLElement | null;
   confirmClearModal!: HTMLElement | null;
   btnCloseEdit!: HTMLElement | null;
@@ -24,16 +35,17 @@ export class MarcasComponent implements OnInit {
   btnSaveEdit!: HTMLElement | null;
   btnConfirmYes!: HTMLButtonElement | null;
   btnConfirmNo!: HTMLButtonElement | null;
-  formBrand: FormGroup;
+  formEditBrand: FormGroup;
 
   constructor(
     private router: Router,
     private brandService: BrandService,
     private fb: FormBuilder
   ) {
-    this.formBrand = this.fb.group({
-      name: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]]
+    this.formEditBrand = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      estado: ['', Validators.required]
     });
    }
 
@@ -60,42 +72,78 @@ export class MarcasComponent implements OnInit {
     });
   }
 
+  showModal() {
+    this.isModalOpen = true;
+  }
+
+  // Función para ocultar el modal
+  hideModal() {
+    this.isModalOpen = false;
+  }
+
   addBrand(){
     this.showFormBrand = "add";
     this.createBrandState = 'none';
   }
 
-  removeBrand(brand: Brand) {
-    brand.remove = true;
+  removeBrand(brand: Marca) {
+    brand.remove = true;  // Establecemos 'remove' como true para mostrar el modal
   }
 
-  confirmDelete(brandId: number) {
-    this.brandService.remove(brandId).subscribe({
-      next: (res) => {
-        // this.listAll();
-        this.brands = this.brands.filter(b => b.id != brandId);
-      },
-      error: (err) => {}
-    });
-  }
-  
-  cancelDelete(brand: Brand) {
-    brand.remove = false;
+  // Función para confirmar la eliminación
+  confirmDelete(marcaId: number) {
+    // Buscar la marca en el arreglo usando el id
+    const marca = this.brands.find(b => b.id === marcaId);
+    if (marca) {
+      this.brandService.remove(marcaId).subscribe({
+        next: (res) => {
+          // Eliminar la marca del arreglo
+          this.brands = this.brands.filter(b => b.id !== marcaId);
+          marca.remove = false;  // Cerrar el modal
+        },
+        error: (err) => {
+          console.error('Error al eliminar la marca', err);
+          marca.remove = false;  // Cerrar el modal en caso de error
+        }
+      });
+    }
   }
 
-  createBrand(){
-    console.log(this.formBrand);
-    this.createBrandState = 'loading';
-    this.brandService.create(this.formBrand.value as BrandBody).subscribe({
-      next: (data) => {
-        this.createBrandState = 'done';
-        // this.listAll();
-        this.brands.push(data);
+  // Función para cancelar la eliminación
+  cancelDelete(brand: Marca) {
+    brand.remove = false;  // Cerramos el modal
+  }
+
+
+  abrirConfirmacion(marcaId: number, nuevoEstado: boolean): void {
+    this.mostrarModal = true;
+    this.confirmacionId = marcaId;
+    this.nuevoEstadoConfirmacion = nuevoEstado;
+    this.mensajeConfirmacion = nuevoEstado 
+      ? '¿Estás seguro de activar esta marca?' 
+      : '¿Estás seguro de desactivar esta marca?';
+  }
+
+  cerrarConfirmacion(): void {
+    this.mostrarModal = false;
+    this.confirmacionId = null;
+  }
+
+  cambiarEstado(marcaId: number | null, nuevoEstado: boolean): void {
+    if (marcaId === null) return;
+    this.brandService.cambiarEstado(marcaId, nuevoEstado).subscribe(
+      () => {
+        const marca = this.brands.find(m => m.id === marcaId);
+        if (marca) {
+          marca.estado = nuevoEstado;
+        }
+        this.cerrarConfirmacion();
       },
-      error: (err) => {
-        this.createBrandState = 'error';
+      (error) => {
+        console.error("Error al cambiar el estado:", error);
+        this.cerrarConfirmacion();
       }
-    });
+    );
   }
 
   // Asigna referencias a los elementos del DOM
@@ -195,4 +243,61 @@ export class MarcasComponent implements OnInit {
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
+
+  openEditModal(marca: Marca) {
+    this.selectedBrandId = marca.id;
+    this.formEditBrand.patchValue({
+      nombre: marca.nombre,
+      descripcion: marca.descripcion,
+      estado: marca.estado ? 'Activo' : 'Inactivo'
+    });
+    document.getElementById('modalEdit')?.classList.remove('hidden');
+  }
+  
+  // Método para cerrar el modal de edición
+  closeEditModal() {
+    document.getElementById('modalEdit')?.classList.add('hidden');
+    this.selectedBrandId = null;
+  }
+
+  // implementacion actualizacion
+
+  updateBrand() {
+    if (this.selectedBrandId) {
+      this.updateBrandState = 'loading';
+      const updatedBrand: MarcaBody = {
+        nombre: this.formEditBrand.value.nombre,
+        descripcion: this.formEditBrand.value.descripcion,
+        estado: this.formEditBrand.value.estado === 'Activo'
+      };
+      
+      this.brandService.update(this.selectedBrandId, updatedBrand).subscribe({
+        next: (data) => {
+          this.updateBrandState = 'done';
+          this.closeEditModal();
+          this.showConfirmationModal(); // Mostrar confirmación de éxito
+        },
+        error: () => {
+          this.updateBrandState = 'error';
+          alert("Error al actualizar la marca");
+        }
+      });
+    }
+  }
+  
+  // Método para mostrar el modal de confirmación
+  showConfirmationModal() {
+    const confirmModal = document.getElementById('confirm-clear-modal');
+    confirmModal?.classList.remove('hidden');
+  }
+  
+  // Método para ocultar el modal de confirmación y navegar a la lista de marcas
+  hideConfirmationModal() {
+    const confirmModal = document.getElementById('confirm-clear-modal');
+    confirmModal?.classList.add('hidden');
+    this.router.navigate(['administracion/gestion/productos/marcas']); // Redirige a la lista de marcas
+  }
+  
+
+
 }

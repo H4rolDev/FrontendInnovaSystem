@@ -1,6 +1,6 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Category, CategoryBody } from 'src/app/shared/models/category';
 import { CategoryService } from 'src/app/shared/services/category.service';
@@ -10,9 +10,20 @@ import { CategoryService } from 'src/app/shared/services/category.service';
   templateUrl: './categorias.component.html',
   styleUrls: ['./categorias.component.css'],
   standalone: true,
-  imports: [NgFor, NgIf, NgClass, FormsModule]
+  imports: [NgFor, NgIf, NgClass, FormsModule, ReactiveFormsModule]
 })
 export class CategoriasComponent implements OnInit {
+  isModalOpen = false; 
+  selectedCategory: Category | null = null; 
+
+  mostrarModal = false;
+  mensajeConfirmacion = '';
+  confirmacionId: number | null = null;
+  nuevoEstadoConfirmacion: boolean = false;
+  selectedCategoryId: number | null = null; // ID de la marca seleccionada para editar
+  updateCategoryState = 'idle';
+
+
   cargaDatos: 'none' | 'loading' | 'done' | 'error' = "none";
   createCategoryState: 'none' | 'loading' | 'done' | 'error' = "none";
   showFormCategory: 'none' | 'edit' | 'add' = 'none';
@@ -24,17 +35,18 @@ export class CategoriasComponent implements OnInit {
   btnSaveEdit!: HTMLElement | null;
   btnConfirmYes!: HTMLButtonElement | null;
   btnConfirmNo!: HTMLButtonElement | null;
-  formCategory: FormGroup;
+  formEditCategory: FormGroup;
   constructor(
     private router: Router,
     private categoryService: CategoryService,
     private fb: FormBuilder
-  ) { 
-    this.formCategory = this.fb.group({
-      name: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]]
+  ) {
+    this.formEditCategory = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      estado: ['', Validators.required]
     });
-  }
+   }
 
   ngOnInit(): void {
     // Aplicando las APIs
@@ -68,14 +80,23 @@ export class CategoriasComponent implements OnInit {
     category.remove = true;
   }
 
+  // Función para confirmar la eliminación
   confirmDelete(categoryId: number) {
-    this.categoryService.remove(categoryId).subscribe({
-      next: (res) => {
-        // this.listAll();
-        this.categorys = this.categorys.filter(b => b.id != categoryId);
-      },
-      error: (err) => {}
-    });
+    // Buscar la marca en el arreglo usando el id
+    const category = this.categorys.find(b => b.id === categoryId);
+    if (category) {
+      this.categoryService.remove(categoryId).subscribe({
+        next: (res) => {
+          // Eliminar la marca del arreglo
+          this.categorys = this.categorys.filter(b => b.id !== categoryId);
+          category.remove = false;  // Cerrar el modal
+        },
+        error: (err) => {
+          console.error('Error al eliminar la categoria', err);
+          category.remove = false;  // Cerrar el modal en caso de error
+        }
+      });
+    }
   }
   
   cancelDelete(category: Category) {
@@ -83,9 +104,9 @@ export class CategoriasComponent implements OnInit {
   }
 
   createCategory(){
-    console.log(this.formCategory);
+    console.log(this.formEditCategory);
     this.createCategoryState = 'loading';
-    this.categoryService.create(this.formCategory.value as CategoryBody).subscribe({
+    this.categoryService.create(this.formEditCategory.value as CategoryBody).subscribe({
       next: (data) => {
         this.createCategoryState = 'done';
         // this.listAll();
@@ -96,6 +117,39 @@ export class CategoriasComponent implements OnInit {
       }
     });
   }
+
+
+  abrirConfirmacion(marcaId: number, nuevoEstado: boolean): void {
+    this.mostrarModal = true;
+    this.confirmacionId = marcaId;
+    this.nuevoEstadoConfirmacion = nuevoEstado;
+    this.mensajeConfirmacion = nuevoEstado 
+      ? '¿Estás seguro de activar esta marca?' 
+      : '¿Estás seguro de desactivar esta marca?';
+  }
+
+  cerrarConfirmacion(): void {
+    this.mostrarModal = false;
+    this.confirmacionId = null;
+  }
+
+  cambiarEstado(marcaId: number | null, nuevoEstado: boolean): void {
+    if (marcaId === null) return;
+    this.categoryService.cambiarEstado(marcaId, nuevoEstado).subscribe(
+      () => {
+        const marca = this.categorys.find(m => m.id === marcaId);
+        if (marca) {
+          marca.estado = nuevoEstado;
+        }
+        this.cerrarConfirmacion();
+      },
+      (error) => {
+        console.error("Error al cambiar el estado:", error);
+        this.cerrarConfirmacion();
+      }
+    );
+  }
+
 
   // Asigna referencias a los elementos del DOM
   private assignDOMElements(): void {
@@ -193,5 +247,58 @@ export class CategoriasComponent implements OnInit {
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  openEditModal(category: Category) {
+    this.selectedCategoryId = category.id;
+    this.formEditCategory.patchValue({
+      nombre: category.nombre,
+      descripcion: category.descripcion,
+      estado: category.estado ? 'Activo' : 'Inactivo'
+    });
+    document.getElementById('modalEdit')?.classList.remove('hidden');
+  }
+  
+  // Método para cerrar el modal de edición
+  closeEditModal() {
+    document.getElementById('modalEdit')?.classList.add('hidden');
+    this.selectedCategoryId = null;
+  }
+
+  // implementacion actualizacion
+
+  updateCategory() {
+    if (this.selectedCategoryId) {
+      this.updateCategoryState = 'loading';
+      const updatedCategory: CategoryBody = {
+        nombre: this.formEditCategory.value.nombre,
+        descripcion: this.formEditCategory.value.descripcion
+      };
+      
+      this.categoryService.update(this.selectedCategoryId, updatedCategory).subscribe({
+        next: (data) => {
+          this.updateCategoryState = 'done';
+          this.closeEditModal();
+          this.showConfirmationModal(); // Mostrar confirmación de éxito
+        },
+        error: () => {
+          this.updateCategoryState = 'error';
+          alert("Error al actualizar la categoria");
+        }
+      });
+    }
+  }
+
+  // Método para mostrar el modal de confirmación
+  showConfirmationModal() {
+    const confirmModal = document.getElementById('confirm-clear-modal');
+    confirmModal?.classList.remove('hidden');
+  }
+  
+  // Método para ocultar el modal de confirmación y navegar a la lista de marcas
+  hideConfirmationModal() {
+    const confirmModal = document.getElementById('confirm-clear-modal');
+    confirmModal?.classList.add('hidden');
+    this.router.navigate(['administracion/gestion/productos/categorias']); // Redirige a la lista de marcas
   }
 }

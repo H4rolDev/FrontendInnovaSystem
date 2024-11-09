@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Brand, BrandBody } from 'src/app/shared/models/brand';
+import { Marca, MarcaBody } from 'src/app/shared/models/marca';
 import { BrandService } from 'src/app/shared/services/brand.service';
 
 @Component({
@@ -10,12 +10,13 @@ import { BrandService } from 'src/app/shared/services/brand.service';
   templateUrl: './nueva-marca.component.html',
   styleUrls: ['./nueva-marca.component.css'],
   standalone: true,
-  imports: [FormsModule, NgClass, ReactiveFormsModule]
+  imports: [FormsModule, ReactiveFormsModule, NgIf]
 })
 export class NuevaMarcaComponent implements OnInit {
   cargaDatos: 'none' | 'loading' | 'done' | 'error' = "none";
-  createBrandState: 'none' | 'loading' | 'done' | 'error' = "none";
-  brands: Brand[] = [];
+  createBrandState: 'idle' | 'loading' | 'done' | 'error' = 'idle';
+  showConfirmationModal = false;
+  brands: Marca[] = [];
   showFormBrand: 'none' | 'edit' | 'add' = 'none';
   formBrand: FormGroup;
   constructor(
@@ -24,10 +25,10 @@ export class NuevaMarcaComponent implements OnInit {
     private router: Router
   ) {
     this.formBrand = this.fb.group({
-      name: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]]
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      descripcion: ['', [Validators.required, Validators.minLength(10)]],
+      estado: [true, Validators.required]
     });
-
   }
 
   ngOnInit(): void {
@@ -35,24 +36,24 @@ export class NuevaMarcaComponent implements OnInit {
     this.validateForm(); 
   }
 
-  addBrand() {
-    this.showFormBrand = "add";
-    this.createBrandState = 'none';
-  }
-
-  createBrand(){
+  createBrand() {
     console.log(this.formBrand);
     this.createBrandState = 'loading';
-    this.brandService.create(this.formBrand.value as BrandBody).subscribe({
+    this.brandService.create(this.formBrand.value).subscribe({
       next: (data) => {
         this.createBrandState = 'done';
-        // this.listAll();
-        this.brands.push(data);
+        this.showConfirmationModal = true; // Muestra el modal de confirmación
+        this.formBrand.reset(); // Limpia el formulario
+        this.formBrand.patchValue({ estado: true }); // Restaura estado a true
       },
       error: (err) => {
         this.createBrandState = 'error';
       }
     });
+  }
+
+  closeModal() {
+    this.showConfirmationModal = false;
   }
 
   // --------------------------------------------------------------- //
@@ -89,21 +90,22 @@ export class NuevaMarcaComponent implements OnInit {
     }
   }
 
-  // Método para cerrar el modal
-  closeModal(): void {
-    const modal = document.getElementById('categorias');
-    if (modal) {
-      modal.classList.remove('flex');
-      modal.classList.add('hidden');
-    }
-  }
-
   // Confirmar acción y redirigir
   confirmDiscard(): void {
     this.closeModal();  // Cierra el modal
 
     // Lógica para redirigir a la ruta especificada
     this.router.navigate(['/administracion/gestion/productos/marcas']);
+  }
+
+  hideConfirmationModal() {
+    const confirmModal = document.getElementById('confirm-clear-modal');
+    confirmModal?.classList.add('hidden');
+    this.router.navigate(['administracion/gestion/productos/marcas']); // Redirige a la lista de marcas
+  }
+
+  cancelarCreacion(): void {
+    this.router.navigate(['administracion/gestion/productos/marcas']); // Ajusta la ruta según tu configuración
   }
 }
 
